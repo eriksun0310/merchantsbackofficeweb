@@ -26,8 +26,8 @@ export function LoginForm() {
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'demo@ptalk.com',
+      password: 'demo1234',
     },
   });
 
