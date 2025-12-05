@@ -39,7 +39,6 @@ const bottomItems = [
     title: '設定',
     href: '/settings',
     icon: Settings,
-    disabled: true,
   },
 ];
 
@@ -120,17 +119,20 @@ export function Sidebar() {
 
           {/* Bottom section */}
           <div className="border-t border-neutral-200 p-2">
-            <Separator className="my-2" />
+            {/* <Separator className="my-2" /> */}
 
             {bottomItems.map((item) => {
               const Icon = item.icon;
+              const isActive = pathname.startsWith(item.href);
 
               const linkContent = (
                 <Link
-                  href={item.disabled ? '#' : item.href}
+                  href={item.href}
                   className={cn(
-                    'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-black',
-                    item.disabled && 'pointer-events-none opacity-50'
+                    'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                    isActive
+                      ? 'bg-neutral-100 text-black'
+                      : 'text-neutral-600 hover:bg-neutral-50 hover:text-black'
                   )}
                 >
                   <Icon className="h-5 w-5 shrink-0" />
