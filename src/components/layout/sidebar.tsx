@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Store, Users, ChevronLeft, ChevronRight, LogOut, Settings } from 'lucide-react';
+import { Store, Users, ChevronLeft, ChevronRight, LogOut, Settings, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useSidebarStore } from '@/stores/sidebar-store';
 import { useAuthStore } from '@/stores/auth-store';
@@ -20,6 +20,11 @@ const navItems = [
     title: '店家管理',
     href: '/venues',
     icon: Store,
+  },
+  {
+    title: '評論管理',
+    href: '/comments',
+    icon: MessageSquare,
   },
   {
     title: '會員管理',
