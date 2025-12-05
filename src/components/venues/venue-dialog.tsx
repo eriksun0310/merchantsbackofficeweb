@@ -62,7 +62,7 @@ export function VenueDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+      <DialogContent className="flex h-[80vh] max-w-2xl flex-col">
         <DialogHeader className="flex flex-row items-center justify-between space-y-0 pr-8">
           <div className="flex items-center gap-3">
             <DialogTitle className="text-xl">{venue.name}</DialogTitle>
@@ -80,7 +80,7 @@ export function VenueDialog({
           )}
         </DialogHeader>
 
-        <div className="mt-4">
+        <div className="mt-4 min-h-0 flex-1 overflow-y-auto">
           {mode === 'view' ? (
             <VenueView venue={venue} />
           ) : (
@@ -95,7 +95,7 @@ export function VenueDialog({
 
         {/* Edit 模式的底部按鈕 */}
         {mode === 'edit' && (
-          <div className="mt-6 flex justify-end gap-3 border-t border-neutral-200 pt-4">
+          <div className="mt-4 flex shrink-0 justify-end gap-3 border-t border-neutral-200 pt-4">
             <Button
               variant="outline"
               onClick={handleCancel}

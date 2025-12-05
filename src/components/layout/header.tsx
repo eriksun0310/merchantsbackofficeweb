@@ -1,7 +1,6 @@
 'use client';
 
 import { useAuthStore } from '@/stores/auth-store';
-import { useSidebarStore } from '@/stores/sidebar-store';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -11,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { LogOut, User } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 interface HeaderProps {
   title: string;
@@ -20,7 +18,6 @@ interface HeaderProps {
 
 export function Header({ title, description }: HeaderProps) {
   const { user, logout } = useAuthStore();
-  const { isOpen } = useSidebarStore();
 
   const handleLogout = () => {
     logout();
@@ -36,12 +33,7 @@ export function Header({ title, description }: HeaderProps) {
     : 'U';
 
   return (
-    <header
-      className={cn(
-        'sticky top-0 z-30 flex h-14 items-center justify-between border-b border-neutral-200 bg-white px-6 transition-all duration-300',
-        isOpen ? 'ml-60' : 'ml-16'
-      )}
-    >
+    <header className="sticky top-0 flex h-14 items-center justify-between border-b border-neutral-200 bg-white px-6">
       <div>
         <h1 className="text-lg font-semibold">{title}</h1>
         {description && (

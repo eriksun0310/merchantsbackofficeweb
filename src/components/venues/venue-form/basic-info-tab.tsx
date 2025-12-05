@@ -41,7 +41,7 @@ export function BasicInfoTab({ form }: BasicInfoTabProps) {
             setValue('categoryType', parseInt(value) as BusinessCategory)
           }
         >
-          <SelectTrigger>
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="請選擇類型" />
           </SelectTrigger>
           <SelectContent>

@@ -1,20 +1,23 @@
 'use client';
 
-import { UseFormReturn, useFieldArray } from 'react-hook-form';
-import { Plus, X } from 'lucide-react';
+import { useState } from 'react';
+import { UseFormReturn } from 'react-hook-form';
+import { Plus, X, ClipboardPaste } from 'lucide-react';
 import { VenueFormValues } from '@/lib/validations/venue';
 import { DayTypeLabels } from '@/types/venue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { SmartPasteDialog } from './smart-paste-dialog';
 
 interface OpeningHoursTabProps {
   form: UseFormReturn<VenueFormValues>;
 }
 
 export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
-  const { control, watch, setValue } = form;
+  const { watch, setValue } = form;
+  const [smartPasteOpen, setSmartPasteOpen] = useState(false);
 
   const openingHours = watch('openingHours');
 
@@ -34,19 +37,14 @@ export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
     );
   };
 
-  const handleCopyToWeekdays = () => {
-    const mondayPeriods = openingHours[0].periods;
-    // 複製到週二至週五 (index 1-4)
-    for (let i = 1; i < 5; i++) {
-      setValue(
-        `openingHours.${i}.periods`,
-        mondayPeriods.map((p) => ({ ...p }))
-      );
-    }
-  };
-
   const handleSetClosed = (dayIndex: number) => {
     setValue(`openingHours.${dayIndex}.periods`, []);
+  };
+
+  const handleSmartPasteApply = (
+    newOpeningHours: { dayType: number; periods: { openTime: string; closeTime: string }[] }[]
+  ) => {
+    setValue('openingHours', newOpeningHours);
   };
 
   return (
@@ -62,9 +60,10 @@ export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
           type="button"
           variant="outline"
           size="sm"
-          onClick={handleCopyToWeekdays}
+          onClick={() => setSmartPasteOpen(true)}
         >
-          複製週一到平日
+          <ClipboardPaste className="mr-2 h-4 w-4" />
+          智慧貼上
         </Button>
       </div>
 
@@ -154,6 +153,14 @@ export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
           </Card>
         ))}
       </div>
+
+      {/* 智慧貼上 Dialog */}
+      <SmartPasteDialog
+        open={smartPasteOpen}
+        onOpenChange={setSmartPasteOpen}
+        currentOpeningHours={openingHours}
+        onApply={handleSmartPasteApply}
+      />
     </div>
   );
 }
