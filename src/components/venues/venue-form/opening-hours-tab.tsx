@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Plus, X, ClipboardPaste } from 'lucide-react';
 import { VenueFormValues } from '@/lib/validations/venue';
@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
 import { SmartPasteDialog } from './smart-paste-dialog';
 
 interface OpeningHoursTabProps {
@@ -20,6 +21,30 @@ export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
   const [smartPasteOpen, setSmartPasteOpen] = useState(false);
 
   const openingHours = watch('openingHours');
+
+  // 判斷是否為暫停營業（所有七天的 periods 都為空）
+  const isSuspended = useMemo(() => {
+    return openingHours.every((day) => day.periods.length === 0);
+  }, [openingHours]);
+
+  // 切換暫停營業狀態
+  const handleSuspendedChange = (suspended: boolean) => {
+    if (suspended) {
+      // 開啟暫停營業：所有天設為空陣列
+      const suspendedHours = openingHours.map((day) => ({
+        ...day,
+        periods: [],
+      }));
+      setValue('openingHours', suspendedHours);
+    } else {
+      // 關閉暫停營業：恢復預設營業時間 09:00-18:00
+      const defaultHours = openingHours.map((day) => ({
+        ...day,
+        periods: [{ openTime: '09:00', closeTime: '18:00' }],
+      }));
+      setValue('openingHours', defaultHours);
+    }
+  };
 
   const handleAddPeriod = (dayIndex: number) => {
     const currentPeriods = openingHours[dayIndex].periods;
@@ -56,18 +81,35 @@ export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
             設定每日營業時間，可新增多個時段
           </p>
         </div>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() => setSmartPasteOpen(true)}
-        >
-          <ClipboardPaste className="mr-2 h-4 w-4" />
-          智慧貼上
-        </Button>
+        <div className="flex items-center gap-4">
+          {/* 暫停營業 Switch */}
+          <div className="flex items-center gap-2">
+            <Switch
+              id="suspended-switch"
+              checked={isSuspended}
+              onCheckedChange={handleSuspendedChange}
+            />
+            <Label
+              htmlFor="suspended-switch"
+              className={`text-sm cursor-pointer ${isSuspended ? 'text-red-600 font-medium' : 'text-neutral-600'}`}
+            >
+              暫停營業
+            </Label>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setSmartPasteOpen(true)}
+            disabled={isSuspended}
+          >
+            <ClipboardPaste className="mr-2 h-4 w-4" />
+            智慧貼上
+          </Button>
+        </div>
       </div>
 
-      <div className="space-y-4">
+      <div className={`space-y-4 ${isSuspended ? 'opacity-50 pointer-events-none' : ''}`}>
         {openingHours.map((day, dayIndex) => (
           <Card key={day.dayType}>
             <CardContent className="py-4">
@@ -84,6 +126,7 @@ export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
                         size="sm"
                         className="h-7 text-xs"
                         onClick={() => handleSetClosed(dayIndex)}
+                        disabled={isSuspended}
                       >
                         設為公休
                       </Button>
@@ -93,6 +136,7 @@ export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
                         size="sm"
                         className="h-7 text-xs"
                         onClick={() => handleAddPeriod(dayIndex)}
+                        disabled={isSuspended}
                       >
                         <Plus className="mr-1 h-3 w-3" />
                         新增時段
@@ -101,7 +145,9 @@ export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
                   </div>
 
                   {day.periods.length === 0 ? (
-                    <p className="text-sm text-neutral-500">公休日</p>
+                    <p className="text-sm text-neutral-500">
+                      {isSuspended ? '休息' : '公休日'}
+                    </p>
                   ) : (
                     <div className="space-y-2">
                       {day.periods.map((period, periodIndex) => (
@@ -113,6 +159,7 @@ export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
                             type="time"
                             className="w-32"
                             value={period.openTime}
+                            disabled={isSuspended}
                             onChange={(e) =>
                               setValue(
                                 `openingHours.${dayIndex}.periods.${periodIndex}.openTime`,
@@ -125,6 +172,7 @@ export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
                             type="time"
                             className="w-32"
                             value={period.closeTime}
+                            disabled={isSuspended}
                             onChange={(e) =>
                               setValue(
                                 `openingHours.${dayIndex}.periods.${periodIndex}.closeTime`,
@@ -137,6 +185,7 @@ export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
                             variant="ghost"
                             size="icon"
                             className="h-8 w-8 text-neutral-400 hover:text-red-500"
+                            disabled={isSuspended}
                             onClick={() =>
                               handleRemovePeriod(dayIndex, periodIndex)
                             }
