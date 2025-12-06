@@ -1,7 +1,10 @@
 import { z } from 'zod';
-import { ContactMethod } from './auth';
 
-export { ContactMethod };
+/** 聯絡方式 */
+export enum ContactMethod {
+  LINE = 'line',
+  PHONE = 'phone',
+}
 
 export const settingsSchema = z
   .object({

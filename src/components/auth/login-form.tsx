@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
@@ -91,21 +90,7 @@ export function LoginForm() {
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? '登入中...' : '登入'}
           </Button>
-
-          <p className="text-center text-sm text-neutral-500">
-            還沒有帳號？{' '}
-            <Link href="/register" className="font-medium text-black hover:underline">
-              立即註冊
-            </Link>
-          </p>
         </form>
-
-        {/* Demo 提示 */}
-        <div className="mt-6 rounded-md bg-neutral-100 p-3 text-sm text-neutral-600">
-          <p className="font-medium">Demo 帳號</p>
-          <p>Email: demo@ptalk.com</p>
-          <p>密碼: demo1234</p>
-        </div>
       </CardContent>
     </Card>
   );

@@ -13,14 +13,6 @@ export type LoginCredentials = {
   password: string;
 };
 
-/** 註冊資料 */
-export type RegisterData = {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  name: string;
-};
-
 /** 認證狀態 */
 export type AuthState = {
   user: User | null;
