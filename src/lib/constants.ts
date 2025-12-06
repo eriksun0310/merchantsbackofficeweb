@@ -5,12 +5,6 @@ export const NAV_ITEMS = [
     href: '/venues',
     icon: 'Store',
   },
-  {
-    title: '會員管理',
-    href: '/members',
-    icon: 'Users',
-    disabled: true, // 預留功能
-  },
 ] as const;
 
 /** Sidebar 寬度 */

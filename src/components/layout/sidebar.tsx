@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Store, Users, ChevronLeft, ChevronRight, LogOut, Settings, MessageSquare } from 'lucide-react';
+import { Store, ChevronLeft, ChevronRight, LogOut, Settings, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useSidebarStore } from '@/stores/sidebar-store';
 import { useAuthStore } from '@/stores/auth-store';
@@ -25,12 +25,6 @@ const navItems = [
     title: '評論管理',
     href: '/comments',
     icon: MessageSquare,
-  },
-  {
-    title: '會員管理',
-    href: '/members',
-    icon: Users,
-    disabled: true,
   },
 ];
 
@@ -88,13 +82,12 @@ export function Sidebar() {
 
               const linkContent = (
                 <Link
-                  href={item.disabled ? '#' : item.href}
+                  href={item.href}
                   className={cn(
                     'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
                     isActive
                       ? 'bg-neutral-100 text-black'
-                      : 'text-neutral-600 hover:bg-neutral-50 hover:text-black',
-                    item.disabled && 'pointer-events-none opacity-50'
+                      : 'text-neutral-600 hover:bg-neutral-50 hover:text-black'
                   )}
                 >
                   <Icon className="h-5 w-5 shrink-0" />
