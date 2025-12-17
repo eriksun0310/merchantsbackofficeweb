@@ -6,6 +6,7 @@ import { BusinessCategory, BusinessCategoryLabels } from '@/types/venue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { CoordinateInput } from '@/components/ui/coordinate-input';
 import {
   Select,
   SelectContent,
@@ -21,6 +22,7 @@ interface BasicInfoTabProps {
 export function BasicInfoTab({ form }: BasicInfoTabProps) {
   const {
     register,
+    control,
     formState: { errors },
     setValue,
     watch,
@@ -134,46 +136,13 @@ export function BasicInfoTab({ form }: BasicInfoTabProps) {
       </div>
 
       {/* 左欄 */}
-      {/* 位置座標 */}
-      <div className="space-y-2">
-        <Label>位置座標</Label>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="latitude" className="text-sm text-neutral-500">
-              緯度
-            </Label>
-            <Input
-              id="latitude"
-              type="number"
-              step="any"
-              placeholder="例如：25.0339"
-              {...register('location.latitude', { valueAsNumber: true })}
-            />
-            {errors.location?.latitude && (
-              <p className="text-sm text-red-500">
-                {errors.location.latitude.message}
-              </p>
-            )}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="longitude" className="text-sm text-neutral-500">
-              經度
-            </Label>
-            <Input
-              id="longitude"
-              type="number"
-              step="any"
-              placeholder="例如：121.5619"
-              {...register('location.longitude', { valueAsNumber: true })}
-            />
-            {errors.location?.longitude && (
-              <p className="text-sm text-red-500">
-                {errors.location.longitude.message}
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
+      {/* 位置座標 - 智慧貼上 */}
+      <CoordinateInput
+        control={control}
+        latitudeName="location.latitude"
+        longitudeName="location.longitude"
+        label="位置座標"
+      />
     </div>
   );
 }
