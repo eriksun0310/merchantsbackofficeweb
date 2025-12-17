@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { mockVenues } from '@/mock/venues';
-import { Venue, VenueEditFormData } from '@/types/venue';
+import { Venue, VenueEditFormData, BusinessStatus } from '@/types/venue';
+import { VenueFormValues } from '@/lib/validations/venue';
 
 /** 取得店家列表 */
 export function useVenues() {
@@ -78,6 +79,45 @@ export function useDeleteVenue() {
       }
 
       // 模擬刪除
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['venues'] });
+    },
+  });
+}
+
+/** 新增店家 */
+export function useCreateVenue() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: VenueFormValues): Promise<Venue> => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      // 模擬建立新店家
+      const newVenue: Venue = {
+        id: `venue-${Date.now()}`,
+        name: data.name,
+        categoryType: data.categoryType,
+        address: data.address,
+        phone: data.phone || undefined,
+        website: data.website || undefined,
+        description: data.description || undefined,
+        location: data.location,
+        googleMapsUrl: data.googleMapsUrl || undefined,
+        images: data.images,
+        openingHours: data.openingHours,
+        petGroundingRuleType: data.petGroundingRuleType,
+        reservationMethods: data.reservationMethods,
+        tags: data.tagIds?.map((id) => ({ id, name: id })) || [],
+        status: BusinessStatus.ACTIVE,
+        ratingSummary: { averageRating: 0, totalReviews: 0 },
+        actions: { canEdit: true, canDelete: true, canToggleStatus: true },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      return newVenue;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['venues'] });

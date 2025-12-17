@@ -135,7 +135,7 @@ export function OpeningHoursTab({ form }: OpeningHoursTabProps) {
             htmlFor="suspended-switch"
             className={`cursor-pointer text-sm ${isSuspended ? 'font-medium text-red-600' : 'text-neutral-600'}`}
           >
-            暫停營業
+            暫停營業11
           </Label>
         </div>
       </div>

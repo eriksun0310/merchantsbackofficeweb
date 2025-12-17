@@ -22,11 +22,11 @@ export function CommentCard({ comment }: CommentCardProps) {
   const isPositive = feedback.type === FeedbackType.PAW;
 
   return (
-    <div className="py-5 border-b border-border/50 last:border-b-0">
+    <div className="px-4 py-5">
       {/* Header: 評論者 & 評價 */}
       <div className="flex items-start justify-between gap-4">
         {/* 左側：頭像、姓名、寵物 */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 min-w-0">
           <Avatar className="h-9 w-9">
             <AvatarImage src={reviewer.avatarUrl} alt={reviewer.name} />
             <AvatarFallback className="bg-muted text-xs">{reviewer.name.slice(0, 1)}</AvatarFallback>
@@ -43,7 +43,7 @@ export function CommentCard({ comment }: CommentCardProps) {
         </div>
 
         {/* 右側：評價 & 友善度 */}
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-3">
           <span className={cn(
             'inline-flex items-center gap-1 text-xs',
             isPositive ? 'text-foreground' : 'text-muted-foreground'

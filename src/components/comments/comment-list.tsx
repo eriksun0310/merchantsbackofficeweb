@@ -40,7 +40,7 @@ export function CommentList({ comments, isLoading }: CommentListProps) {
   }
 
   return (
-    <div className="divide-y divide-neutral-100 rounded-lg border bg-white">
+    <div className="divide-y divide-border/50 rounded-lg border bg-white">
       {comments.map((comment) => (
         <CommentCard key={comment.id} comment={comment} />
       ))}

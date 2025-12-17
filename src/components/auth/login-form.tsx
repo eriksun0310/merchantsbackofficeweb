@@ -1,22 +1,17 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
-import { useAuthStore } from '@/stores/auth-store';
-import { mockUser, mockCredentials } from '@/mock/user';
+import { useLogin } from '@/hooks/use-auth';
 import { loginSchema, LoginFormValues } from '@/lib/validations/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/password-input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function LoginForm() {
-  const router = useRouter();
-  const { login } = useAuthStore();
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate: login, isPending } = useLogin();
 
   const {
     register,
@@ -25,30 +20,13 @@ export function LoginForm() {
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: 'demo@ptalk.com',
-      password: 'demo1234',
+      email: 'merchant01@test.com',
+      password: 'As654321',
     },
   });
 
-  const onSubmit = async (data: LoginFormValues) => {
-    setIsLoading(true);
-
-    // 模擬 API 請求
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Mock 驗證
-    if (
-      data.email === mockCredentials.email &&
-      data.password === mockCredentials.password
-    ) {
-      login(mockUser);
-      toast.success('登入成功');
-      router.push('/venues');
-    } else {
-      toast.error('Email 或密碼錯誤');
-    }
-
-    setIsLoading(false);
+  const onSubmit = (data: LoginFormValues) => {
+    login(data);
   };
 
   return (
@@ -66,7 +44,7 @@ export function LoginForm() {
               type="email"
               placeholder="example@email.com"
               {...register('email')}
-              disabled={isLoading}
+              disabled={isPending}
             />
             {errors.email && (
               <p className="text-xs text-destructive">{errors.email.message}</p>
@@ -75,20 +53,19 @@ export function LoginForm() {
 
           <div className="space-y-2">
             <Label htmlFor="password" className="text-sm text-muted-foreground">密碼</Label>
-            <Input
+            <PasswordInput
               id="password"
-              type="password"
               placeholder="請輸入密碼"
               {...register('password')}
-              disabled={isLoading}
+              disabled={isPending}
             />
             {errors.password && (
               <p className="text-xs text-destructive">{errors.password.message}</p>
             )}
           </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? '登入中...' : '登入'}
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? '登入中...' : '登入'}
           </Button>
         </form>
       </CardContent>

@@ -33,6 +33,37 @@ export function BasicInfoTab({ form }: BasicInfoTabProps) {
   return (
     <div className="grid grid-cols-2 gap-x-8 gap-y-6">
       {/* 左欄 */}
+      {/* 店家名稱 */}
+      <div className="space-y-2">
+        <Label htmlFor="name">
+          店家名稱 <span className="text-red-500">*</span>
+        </Label>
+        <Input
+          id="name"
+          placeholder="請輸入店家名稱"
+          {...register('name')}
+        />
+        {errors.name && (
+          <p className="text-sm text-red-500">{errors.name.message}</p>
+        )}
+      </div>
+
+      {/* 右欄 */}
+      {/* Google 地圖連結 */}
+      <div className="space-y-2">
+        <Label htmlFor="googleMapsUrl">Google 地圖連結</Label>
+        <Input
+          id="googleMapsUrl"
+          type="url"
+          placeholder="https://maps.google.com/..."
+          {...register('googleMapsUrl')}
+        />
+        {errors.googleMapsUrl && (
+          <p className="text-sm text-red-500">{errors.googleMapsUrl.message}</p>
+        )}
+      </div>
+
+      {/* 左欄 */}
       {/* 店家類型 */}
       <div className="space-y-2">
         <Label htmlFor="categoryType">
@@ -61,17 +92,17 @@ export function BasicInfoTab({ form }: BasicInfoTabProps) {
       </div>
 
       {/* 右欄 */}
-      {/* Google 地圖連結 */}
+      {/* 官方網站 */}
       <div className="space-y-2">
-        <Label htmlFor="googleMapsUrl">Google 地圖連結</Label>
+        <Label htmlFor="website">官方網站</Label>
         <Input
-          id="googleMapsUrl"
+          id="website"
           type="url"
-          placeholder="https://maps.google.com/..."
-          {...register('googleMapsUrl')}
+          placeholder="https://example.com"
+          {...register('website')}
         />
-        {errors.googleMapsUrl && (
-          <p className="text-sm text-red-500">{errors.googleMapsUrl.message}</p>
+        {errors.website && (
+          <p className="text-sm text-red-500">{errors.website.message}</p>
         )}
       </div>
 
@@ -92,17 +123,17 @@ export function BasicInfoTab({ form }: BasicInfoTabProps) {
       </div>
 
       {/* 右欄 */}
-      {/* 官方網站 */}
-      <div className="space-y-2">
-        <Label htmlFor="website">官方網站</Label>
-        <Input
-          id="website"
-          type="url"
-          placeholder="https://example.com"
-          {...register('website')}
+      {/* 店家描述 */}
+      <div className="row-span-2 space-y-2">
+        <Label htmlFor="description">店家描述</Label>
+        <Textarea
+          id="description"
+          placeholder="請輸入店家描述..."
+          className="min-h-[120px]"
+          {...register('description')}
         />
-        {errors.website && (
-          <p className="text-sm text-red-500">{errors.website.message}</p>
+        {errors.description && (
+          <p className="text-sm text-red-500">{errors.description.message}</p>
         )}
       </div>
 
@@ -117,21 +148,6 @@ export function BasicInfoTab({ form }: BasicInfoTabProps) {
         />
         {errors.phone && (
           <p className="text-sm text-red-500">{errors.phone.message}</p>
-        )}
-      </div>
-
-      {/* 右欄 */}
-      {/* 店家描述 */}
-      <div className="row-span-2 space-y-2">
-        <Label htmlFor="description">店家描述</Label>
-        <Textarea
-          id="description"
-          placeholder="請輸入店家描述..."
-          className="min-h-[120px]"
-          {...register('description')}
-        />
-        {errors.description && (
-          <p className="text-sm text-red-500">{errors.description.message}</p>
         )}
       </div>
 

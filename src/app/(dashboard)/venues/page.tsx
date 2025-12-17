@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { Plus, Search } from 'lucide-react';
 import { toast } from 'sonner';
-import { useVenues, useUpdateVenue } from '@/hooks/use-venues';
+import { useVenues, useUpdateVenue, useCreateVenue } from '@/hooks/use-venues';
 import { Venue, BusinessStatus, BusinessCategoryLabels } from '@/types/venue';
 import { VenueFormValues } from '@/lib/validations/venue';
 import { Header } from '@/components/layout/header';
@@ -24,6 +24,7 @@ import {
 export default function VenuesPage() {
   const { data: venues = [], isLoading } = useVenues();
   const updateVenue = useUpdateVenue();
+  const createVenue = useCreateVenue();
 
   // 篩選狀態
   const [searchQuery, setSearchQuery] = useState('');
@@ -33,6 +34,7 @@ export default function VenuesPage() {
   // Dialog 狀態
   const [selectedVenue, setSelectedVenue] = useState<Venue | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
   // 篩選邏輯
   const filteredVenues = useMemo(() => {
@@ -69,6 +71,17 @@ export default function VenuesPage() {
     } catch {
       toast.error('更新失敗，請稍後再試');
       throw new Error('Update failed');
+    }
+  };
+
+  const handleCreate = async (data: VenueFormValues) => {
+    try {
+      await createVenue.mutateAsync(data);
+      toast.success('店家已建立');
+      setCreateDialogOpen(false);
+    } catch {
+      toast.error('建立失敗，請稍後再試');
+      throw new Error('Create failed');
     }
   };
 
@@ -128,7 +141,7 @@ export default function VenuesPage() {
           </div>
 
           {/* 新增按鈕 */}
-          <Button disabled className="shrink-0">
+          <Button className="shrink-0" onClick={() => setCreateDialogOpen(true)}>
             <Plus className="h-4 w-4" />
             新增店家
           </Button>
@@ -151,13 +164,23 @@ export default function VenuesPage() {
         </Card>
       </div>
 
-      {/* 店家 Dialog */}
+      {/* 編輯店家 Dialog */}
       <VenueDialog
         venue={selectedVenue}
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         onSave={handleSave}
         isSaving={updateVenue.isPending}
+        dialogMode="view-edit"
+      />
+
+      {/* 新增店家 Dialog */}
+      <VenueDialog
+        open={createDialogOpen}
+        onOpenChange={setCreateDialogOpen}
+        onCreate={handleCreate}
+        isSaving={createVenue.isPending}
+        dialogMode="create"
       />
     </>
   );

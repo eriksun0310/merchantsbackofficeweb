@@ -10,7 +10,10 @@
       "Bash(npx shadcn@latest add:*)",
       "Bash(npm run build:*)",
       "Bash(npm rebuild)",
-      "Bash(git remote add:*)"
+      "Bash(git remote add:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "WebFetch(domain:dev.merchant.ptalk.moushih.com)"
     ],
     "deny": [],
     "ask": []

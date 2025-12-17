@@ -8,6 +8,7 @@ import {
   venueFormSchema,
   VenueFormValues,
   venueToFormValues,
+  getDefaultFormValues,
 } from '@/lib/validations/venue';
 import { VenueTab } from '../venue-dialog';
 import { BasicInfoTab } from './basic-info-tab';
@@ -20,7 +21,7 @@ export interface VenueFormRef {
 }
 
 interface VenueFormProps {
-  venue: Venue;
+  venue?: Venue;
   activeTab: VenueTab;
   onSubmit: (data: VenueFormValues) => Promise<void>;
   isSubmitting?: boolean;
@@ -30,7 +31,7 @@ export const VenueForm = forwardRef<VenueFormRef, VenueFormProps>(
   function VenueForm({ venue, activeTab, onSubmit, isSubmitting }, ref) {
     const form = useForm<VenueFormValues>({
       resolver: zodResolver(venueFormSchema),
-      defaultValues: venueToFormValues(venue),
+      defaultValues: venue ? venueToFormValues(venue) : getDefaultFormValues(),
     });
 
     const handleSubmit = form.handleSubmit(async (data) => {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuthStore } from '@/stores/auth-store';
+import { useMerchantProfile } from '@/hooks/use-merchant';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -19,20 +20,21 @@ interface HeaderProps {
 }
 
 export function Header({ title, description }: HeaderProps) {
-  const { user, logout } = useAuthStore();
+  const { logout } = useAuthStore();
+  const { data: profile } = useMerchantProfile();
 
   const handleLogout = () => {
     logout();
     window.location.href = '/login';
   };
 
-  const initials = user?.name
-    ? user.name
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
-    : 'U';
+  const displayName = profile?.contactName || profile?.companyName || '使用者';
+  const initials = displayName
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 
   return (
     <header className="sticky top-0 z-10 border-b border-neutral-300 bg-white/95 backdrop-blur-sm">
@@ -52,14 +54,14 @@ export function Header({ title, description }: HeaderProps) {
           <DropdownMenuTrigger asChild>
             <button className="flex items-center gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-muted/50 focus:outline-none">
               <Avatar className="h-9 w-9">
-                <AvatarImage src={user?.avatar} alt={user?.name} />
+                <AvatarImage src={undefined} alt={displayName} />
                 <AvatarFallback className="bg-neutral-200 text-sm font-medium">
                   {initials}
                 </AvatarFallback>
               </Avatar>
               <div className="hidden text-left sm:block">
-                <p className="text-sm font-medium text-foreground">{user?.name}</p>
-                <p className="text-xs text-muted-foreground">管理員</p>
+                <p className="text-sm font-medium text-foreground">{displayName}</p>
+                <p className="text-xs text-muted-foreground">{profile?.companyName}</p>
               </div>
               <ChevronDown className="h-4 w-4 text-muted-foreground" />
             </button>
@@ -67,8 +69,8 @@ export function Header({ title, description }: HeaderProps) {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium">{user?.name}</p>
-                <p className="text-xs text-muted-foreground">{user?.email}</p>
+                <p className="text-sm font-medium">{displayName}</p>
+                <p className="text-xs text-muted-foreground">{profile?.email}</p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

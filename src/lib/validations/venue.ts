@@ -19,6 +19,11 @@ const dailyOpeningHoursSchema = z.object({
 
 /** 店家編輯表單 Schema */
 export const venueFormSchema = z.object({
+  name: z
+    .string()
+    .min(1, '請輸入店家名稱')
+    .max(100, '店家名稱不可超過 100 字'),
+
   categoryType: z.nativeEnum(BusinessCategory, {
     message: '請選擇店家類型',
   }),
@@ -78,6 +83,7 @@ export type VenueFormValues = z.infer<typeof venueFormSchema>;
 
 /** 將 Venue 轉換為表單初始值 */
 export function venueToFormValues(venue: {
+  name: string;
   categoryType: BusinessCategory;
   address: string;
   phone?: string;
@@ -92,6 +98,7 @@ export function venueToFormValues(venue: {
   tags?: { id: string; name: string }[];
 }): VenueFormValues {
   return {
+    name: venue.name,
     categoryType: venue.categoryType,
     address: venue.address,
     phone: venue.phone ?? '',
@@ -104,5 +111,32 @@ export function venueToFormValues(venue: {
     petGroundingRuleType: venue.petGroundingRuleType,
     reservationMethods: venue.reservationMethods ?? [],
     tagIds: venue.tags?.map((t) => t.id) ?? [],
+  };
+}
+
+/** 取得新增店家的預設表單值 */
+export function getDefaultFormValues(): VenueFormValues {
+  return {
+    name: '',
+    categoryType: BusinessCategory.RESTAURANT,
+    address: '',
+    phone: '',
+    location: { latitude: 0, longitude: 0 },
+    googleMapsUrl: '',
+    website: '',
+    description: '',
+    images: [],
+    openingHours: [
+      { dayType: 1, periods: [{ openTime: '09:00', closeTime: '18:00' }] }, // 週一
+      { dayType: 2, periods: [{ openTime: '09:00', closeTime: '18:00' }] }, // 週二
+      { dayType: 3, periods: [{ openTime: '09:00', closeTime: '18:00' }] }, // 週三
+      { dayType: 4, periods: [{ openTime: '09:00', closeTime: '18:00' }] }, // 週四
+      { dayType: 5, periods: [{ openTime: '09:00', closeTime: '18:00' }] }, // 週五
+      { dayType: 6, periods: [{ openTime: '09:00', closeTime: '18:00' }] }, // 週六
+      { dayType: 7, periods: [{ openTime: '09:00', closeTime: '18:00' }] }, // 週日
+    ],
+    petGroundingRuleType: undefined,
+    reservationMethods: [],
+    tagIds: [],
   };
 }
