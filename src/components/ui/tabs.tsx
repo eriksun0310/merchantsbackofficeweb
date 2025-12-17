@@ -26,7 +26,7 @@ function TabsList({
     <TabsPrimitive.List
       data-slot="tabs-list"
       className={cn(
-        "text-muted-foreground inline-flex h-10 w-fit items-center justify-start gap-1 border-b border-border",
+        "text-brand inline-flex h-10 w-fit items-center justify-start gap-1 border-b border-brand-light",
         className
       )}
       {...props}
@@ -42,7 +42,7 @@ function TabsTrigger({
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       className={cn(
-        "data-[state=active]:text-foreground data-[state=active]:border-foreground text-muted-foreground inline-flex h-full items-center justify-center gap-1.5 border-b-2 border-transparent px-3 pb-2.5 text-sm font-medium whitespace-nowrap transition-colors disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 -mb-px",
+        "data-[state=active]:text-brand-dark data-[state=active]:border-brand text-brand inline-flex h-full items-center justify-center gap-1.5 border-b-2 border-transparent px-3 pb-2.5 text-sm font-semibold whitespace-nowrap transition-colors hover:text-brand-dark disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 -mb-px",
         className
       )}
       {...props}

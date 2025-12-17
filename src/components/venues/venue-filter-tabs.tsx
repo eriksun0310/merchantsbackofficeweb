@@ -43,11 +43,11 @@ export function VenueFilterTabs({ venues, selectedStatus, onStatusChange }: Venu
             key={tab.label}
             onClick={() => onStatusChange(tab.status)}
             className={cn(
-              'relative px-4 py-3 text-sm font-medium transition-colors',
-              'hover:text-foreground',
+              'relative px-4 py-3 text-sm font-semibold transition-colors',
+              'hover:text-brand-dark',
               isActive
-                ? 'text-foreground'
-                : 'text-muted-foreground'
+                ? 'text-brand-dark'
+                : 'text-brand'
             )}
           >
             <span>{tab.label}</span>
@@ -55,8 +55,8 @@ export function VenueFilterTabs({ venues, selectedStatus, onStatusChange }: Venu
               className={cn(
                 'ml-1.5 inline-flex min-w-[20px] items-center justify-center rounded-full px-1.5 py-0.5 text-xs tabular-nums',
                 isActive
-                  ? 'bg-foreground text-white'
-                  : 'bg-neutral-100 text-muted-foreground'
+                  ? 'bg-brand text-white'
+                  : 'bg-brand-light text-brand'
               )}
             >
               {tab.count}
@@ -64,7 +64,7 @@ export function VenueFilterTabs({ venues, selectedStatus, onStatusChange }: Venu
 
             {/* 選中指示線 */}
             {isActive && (
-              <span className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-foreground" />
+              <span className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-brand" />
             )}
           </button>
         );

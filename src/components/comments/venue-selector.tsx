@@ -27,7 +27,7 @@ export function VenueSelector({
     <div className="flex items-center gap-3">
       <div className="flex items-center gap-2 text-sm font-medium text-neutral-700">
         <Store className="h-4 w-4" />
-        <span>選擇店家ㄉ</span>
+        <span>選擇店家</span>
       </div>
       <Select
         value={selectedVenueId || undefined}

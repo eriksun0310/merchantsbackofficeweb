@@ -50,28 +50,38 @@ export function Sidebar() {
     <TooltipProvider delayDuration={0}>
       <aside
         className={cn(
-          'fixed left-0 top-0 z-40 h-screen bg-neutral-50/80 transition-all duration-300',
+          'fixed left-0 top-0 z-40 h-screen bg-brand-light text-brand-dark transition-all duration-300',
           isOpen ? 'w-60' : 'w-16'
         )}
       >
         <div className="flex h-full flex-col">
           {/* Header */}
-          <div className="flex h-16 items-center justify-between px-4">
-            {isOpen && (
-              <span className="text-base font-medium tracking-tight">PTalk 後台</span>
-            )}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggle}
-              className={cn('h-8 w-8', !isOpen && 'mx-auto')}
+          <div className="flex h-16 items-center justify-between px-3">
+            <button
+              onClick={!isOpen ? toggle : undefined}
+              className={cn('flex items-center gap-2', !isOpen && 'mx-auto cursor-pointer')}
             >
-              {isOpen ? (
-                <ChevronLeft className="h-4 w-4" />
-              ) : (
-                <ChevronRight className="h-4 w-4" />
+              <img
+                src="/images/logo.png"
+                alt="PTalk Logo"
+                width={40}
+                height={40}
+                className="rounded-xl shadow-lg"
+              />
+              {isOpen && (
+                <span className="text-lg font-bold tracking-tight text-brand-dark">PTalk</span>
               )}
-            </Button>
+            </button>
+            {isOpen && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggle}
+                className="h-8 w-8 text-brand hover:text-brand-dark hover:bg-brand/20"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+            )}
           </div>
 
           {/* Navigation */}
@@ -84,10 +94,10 @@ export function Sidebar() {
                 <Link
                   href={item.href}
                   className={cn(
-                    'flex items-center gap-3 rounded px-3 py-2.5 text-sm font-medium transition-opacity',
+                    'flex items-center gap-3 rounded px-3 py-2.5 text-sm font-medium transition-colors',
                     isActive
-                      ? 'text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
+                      ? 'bg-brand text-white'
+                      : 'text-brand hover:bg-brand/20 hover:text-brand-dark'
                   )}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
@@ -122,10 +132,10 @@ export function Sidebar() {
                 <Link
                   href={item.href}
                   className={cn(
-                    'flex items-center gap-3 rounded px-3 py-2.5 text-sm font-medium transition-opacity',
+                    'flex items-center gap-3 rounded px-3 py-2.5 text-sm font-medium transition-colors',
                     isActive
-                      ? 'text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
+                      ? 'bg-brand text-white'
+                      : 'text-brand hover:bg-brand/20 hover:text-brand-dark'
                   )}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
@@ -151,7 +161,7 @@ export function Sidebar() {
             {isOpen ? (
               <button
                 onClick={handleLogout}
-                className="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm font-medium text-muted-foreground transition-opacity hover:text-foreground"
+                className="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm font-medium text-brand transition-colors hover:bg-brand/20 hover:text-brand-dark"
               >
                 <LogOut className="h-4 w-4 shrink-0" />
                 <span>登出</span>
@@ -161,7 +171,7 @@ export function Sidebar() {
                 <TooltipTrigger asChild>
                   <button
                     onClick={handleLogout}
-                    className="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm font-medium text-muted-foreground transition-opacity hover:text-foreground"
+                    className="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm font-medium text-brand transition-colors hover:bg-brand/20 hover:text-brand-dark"
                   >
                     <LogOut className="h-4 w-4 shrink-0" />
                   </button>

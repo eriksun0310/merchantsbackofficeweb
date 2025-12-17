@@ -37,33 +37,33 @@ export function Header({ title, description }: HeaderProps) {
     .slice(0, 2);
 
   return (
-    <header className="sticky top-0 z-10 border-b border-neutral-300 bg-white/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-10 bg-brand-light shadow-sm">
       <div className="flex items-center justify-between px-6 py-4 lg:px-8">
         {/* 頁面標題 */}
         <div>
-          <h1 className="text-xl font-semibold text-foreground lg:text-2xl">
+          <h1 className="text-xl font-semibold text-brand-dark lg:text-2xl">
             {title}
           </h1>
           {description && (
-            <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>
+            <p className="mt-0.5 text-sm text-brand">{description}</p>
           )}
         </div>
 
         {/* 用戶選單 */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-muted/50 focus:outline-none">
+            <button className="flex items-center gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors hover:bg-brand/20 focus:outline-none">
               <Avatar className="h-9 w-9">
                 <AvatarImage src={undefined} alt={displayName} />
-                <AvatarFallback className="bg-neutral-200 text-sm font-medium">
+                <AvatarFallback className="bg-brand-dark text-sm font-medium text-brand-light">
                   {initials}
                 </AvatarFallback>
               </Avatar>
               <div className="hidden text-left sm:block">
-                <p className="text-sm font-medium text-foreground">{displayName}</p>
-                <p className="text-xs text-muted-foreground">{profile?.companyName}</p>
+                <p className="text-sm font-medium text-brand-dark">{displayName}</p>
+                <p className="text-xs text-brand">{profile?.companyName}</p>
               </div>
-              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              <ChevronDown className="h-4 w-4 text-brand" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">

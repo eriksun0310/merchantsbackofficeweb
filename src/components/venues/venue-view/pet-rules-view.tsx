@@ -51,7 +51,7 @@ export function PetRulesView({ venue }: PetRulesViewProps) {
       <div className="space-y-2">
         <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
           <Tags className="h-4 w-4" />
-          <span>毛孩友善標籤ㄅ</span>
+          <span>毛孩友善標籤</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {venue.tags && venue.tags.length > 0 ? (
