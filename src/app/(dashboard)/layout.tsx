@@ -25,7 +25,7 @@ export default function DashboardLayout({
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-neutral-200 border-t-black" />
+        <div className="text-sm text-muted-foreground">Loading...</div>
       </div>
     );
   }
@@ -35,7 +35,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-white">
       <Sidebar />
       <main
         className={cn(

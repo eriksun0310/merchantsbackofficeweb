@@ -9,11 +9,11 @@ import {
   VenueFormValues,
   venueToFormValues,
 } from '@/lib/validations/venue';
+import { VenueTab } from '../venue-dialog';
 import { BasicInfoTab } from './basic-info-tab';
 import { OpeningHoursTab } from './opening-hours-tab';
 import { ImagesTab } from './images-tab';
 import { PetRulesTab } from './pet-rules-tab';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export interface VenueFormRef {
   submit: () => void;
@@ -21,12 +21,13 @@ export interface VenueFormRef {
 
 interface VenueFormProps {
   venue: Venue;
+  activeTab: VenueTab;
   onSubmit: (data: VenueFormValues) => Promise<void>;
   isSubmitting?: boolean;
 }
 
 export const VenueForm = forwardRef<VenueFormRef, VenueFormProps>(
-  function VenueForm({ venue, onSubmit, isSubmitting }, ref) {
+  function VenueForm({ venue, activeTab, onSubmit, isSubmitting }, ref) {
     const form = useForm<VenueFormValues>({
       resolver: zodResolver(venueFormSchema),
       defaultValues: venueToFormValues(venue),
@@ -44,31 +45,11 @@ export const VenueForm = forwardRef<VenueFormRef, VenueFormProps>(
     }));
 
     return (
-      <form onSubmit={handleSubmit}>
-        <Tabs defaultValue="basic" className="w-full">
-          <TabsList className="mb-4 grid w-full grid-cols-4">
-            <TabsTrigger value="basic">基本資訊</TabsTrigger>
-            <TabsTrigger value="hours">營業時間</TabsTrigger>
-            <TabsTrigger value="images">圖片</TabsTrigger>
-            <TabsTrigger value="rules">寵物規定</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="basic" className="mt-0">
-            <BasicInfoTab form={form} />
-          </TabsContent>
-
-          <TabsContent value="hours" className="mt-0">
-            <OpeningHoursTab form={form} />
-          </TabsContent>
-
-          <TabsContent value="images" className="mt-0">
-            <ImagesTab form={form} />
-          </TabsContent>
-
-          <TabsContent value="rules" className="mt-0">
-            <PetRulesTab form={form} />
-          </TabsContent>
-        </Tabs>
+      <form onSubmit={handleSubmit} className="p-6">
+        {activeTab === 'basic' && <BasicInfoTab form={form} />}
+        {activeTab === 'hours' && <OpeningHoursTab form={form} />}
+        {activeTab === 'images' && <ImagesTab form={form} />}
+        {activeTab === 'rules' && <PetRulesTab form={form} />}
       </form>
     );
   }

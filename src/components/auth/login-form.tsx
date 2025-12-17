@@ -52,15 +52,15 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-sm border-0">
       <CardHeader className="space-y-1 text-center">
-        <CardTitle className="text-2xl font-bold">PTalk 店家後台</CardTitle>
-        <p className="text-sm text-neutral-500">請登入您的帳號</p>
+        <CardTitle className="text-xl font-medium">PTalk 店家後台</CardTitle>
+        <p className="text-sm text-muted-foreground">請登入您的帳號</p>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-sm text-muted-foreground">Email</Label>
             <Input
               id="email"
               type="email"
@@ -69,12 +69,12 @@ export function LoginForm() {
               disabled={isLoading}
             />
             {errors.email && (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
+              <p className="text-xs text-destructive">{errors.email.message}</p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">密碼</Label>
+            <Label htmlFor="password" className="text-sm text-muted-foreground">密碼</Label>
             <Input
               id="password"
               type="password"
@@ -83,7 +83,7 @@ export function LoginForm() {
               disabled={isLoading}
             />
             {errors.password && (
-              <p className="text-sm text-red-500">{errors.password.message}</p>
+              <p className="text-xs text-destructive">{errors.password.message}</p>
             )}
           </div>
 

@@ -15,7 +15,6 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 
 interface PetRulesTabProps {
   form: UseFormReturn<VenueFormValues>;
@@ -60,78 +59,69 @@ export function PetRulesTab({ form }: PetRulesTabProps) {
   const availableTags = allTags.filter((tag) => !tagIds.includes(tag.id));
 
   return (
-    <div className="space-y-8">
-      {/* 落地規定 */}
-      <div className="space-y-4">
-        <div>
+    <div className="grid grid-cols-2 gap-8">
+      {/* 左欄 */}
+      <div className="space-y-6">
+        {/* 落地規定 */}
+        <div className="space-y-4">
           <Label className="text-base font-medium">落地規定</Label>
-          <p className="text-sm text-neutral-500">寵物在店內的活動規定</p>
-        </div>
-        <RadioGroup
-          value={petGroundingRuleType?.toString()}
-          onValueChange={(value) =>
-            setValue(
-              'petGroundingRuleType',
-              parseInt(value) as PetGroundingRuleType
-            )
-          }
-        >
-          {Object.entries(PetGroundingRuleTypeLabels).map(([value, label]) => (
-            <div key={value} className="flex items-center space-x-2">
-              <RadioGroupItem value={value} id={`grounding-${value}`} />
-              <Label
-                htmlFor={`grounding-${value}`}
-                className="font-normal cursor-pointer"
-              >
-                {label}
-              </Label>
-            </div>
-          ))}
-        </RadioGroup>
-      </div>
-
-      <Separator />
-
-      {/* 預約方式 */}
-      <div className="space-y-4">
-        <div>
-          <Label className="text-base font-medium">預約方式</Label>
-          <p className="text-sm text-neutral-500">可複選</p>
-        </div>
-        <div className="space-y-3">
-          {Object.entries(ReservationMethodLabels).map(([value, label]) => {
-            const method = parseInt(value) as ReservationMethod;
-            const isChecked = reservationMethods.includes(method);
-
-            return (
+          <RadioGroup
+            value={petGroundingRuleType?.toString()}
+            onValueChange={(value) =>
+              setValue(
+                'petGroundingRuleType',
+                parseInt(value) as PetGroundingRuleType
+              )
+            }
+          >
+            {Object.entries(PetGroundingRuleTypeLabels).map(([value, label]) => (
               <div key={value} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`reservation-${value}`}
-                  checked={isChecked}
-                  onCheckedChange={(checked) =>
-                    handleReservationMethodChange(method, checked as boolean)
-                  }
-                />
+                <RadioGroupItem value={value} id={`grounding-${value}`} />
                 <Label
-                  htmlFor={`reservation-${value}`}
-                  className="font-normal cursor-pointer"
+                  htmlFor={`grounding-${value}`}
+                  className="cursor-pointer font-normal"
                 >
                   {label}
                 </Label>
               </div>
-            );
-          })}
+            ))}
+          </RadioGroup>
+        </div>
+
+        {/* 預約方式 */}
+        <div className="space-y-4">
+          <Label className="text-base font-medium">預約方式</Label>
+          <div className="space-y-3">
+            {Object.entries(ReservationMethodLabels).map(([value, label]) => {
+              const method = parseInt(value) as ReservationMethod;
+              const isChecked = reservationMethods.includes(method);
+
+              return (
+                <div key={value} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`reservation-${value}`}
+                    checked={isChecked}
+                    onCheckedChange={(checked) =>
+                      handleReservationMethodChange(method, checked as boolean)
+                    }
+                  />
+                  <Label
+                    htmlFor={`reservation-${value}`}
+                    className="cursor-pointer font-normal"
+                  >
+                    {label}
+                  </Label>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      <Separator />
-
-      {/* 毛孩友善標籤 */}
+      {/* 右欄 */}
       <div className="space-y-4">
-        <div>
-          <Label className="text-base font-medium">毛孩友善標籤</Label>
-          <p className="text-sm text-neutral-500">選擇適合的標籤</p>
-        </div>
+        {/* 毛孩友善標籤 */}
+        <Label className="text-base font-medium">毛孩友善標籤</Label>
 
         {/* 已選標籤 */}
         {selectedTags.length > 0 && (
@@ -139,7 +129,7 @@ export function PetRulesTab({ form }: PetRulesTabProps) {
             {selectedTags.map((tag) => (
               <Badge
                 key={tag.id}
-                variant="secondary"
+                variant="default"
                 className="gap-1 pl-3 pr-1"
               >
                 {tag.name}

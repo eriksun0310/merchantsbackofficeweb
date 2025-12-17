@@ -4,7 +4,6 @@ import { format } from 'date-fns';
 import { zhTW } from 'date-fns/locale';
 import { PawPrint } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import {
   CommentItem,
   FeedbackType,
@@ -23,19 +22,19 @@ export function CommentCard({ comment }: CommentCardProps) {
   const isPositive = feedback.type === FeedbackType.PAW;
 
   return (
-    <div className="border-l-2 border-neutral-200 bg-white py-4 pl-4 pr-4">
+    <div className="py-5 border-b border-border/50 last:border-b-0">
       {/* Header: 評論者 & 評價 */}
       <div className="flex items-start justify-between gap-4">
         {/* 左側：頭像、姓名、寵物 */}
         <div className="flex items-center gap-3">
-          <Avatar className="h-10 w-10">
+          <Avatar className="h-9 w-9">
             <AvatarImage src={reviewer.avatarUrl} alt={reviewer.name} />
-            <AvatarFallback className="bg-neutral-100">{reviewer.name.slice(0, 1)}</AvatarFallback>
+            <AvatarFallback className="bg-muted text-xs">{reviewer.name.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>
-            <p className="font-medium">{reviewer.name}</p>
+            <p className="text-sm font-medium text-foreground">{reviewer.name}</p>
             {petInfo && (
-              <p className="text-sm text-neutral-500">
+              <p className="text-xs text-muted-foreground">
                 {PetSpeciesLabels[petInfo.species]} · {petInfo.name}
                 {petInfo.breed && ` (${petInfo.breed})`}
               </p>
@@ -44,27 +43,22 @@ export function CommentCard({ comment }: CommentCardProps) {
         </div>
 
         {/* 右側：評價 & 友善度 */}
-        <div className="flex items-center gap-2">
-          <Badge
-            variant="outline"
-            className={cn(
-              'gap-1',
-              isPositive
-                ? 'border-green-200 bg-green-50 text-green-700'
-                : 'border-amber-200 bg-amber-50 text-amber-700'
-            )}
-          >
-            <PawPrint className="h-3.5 w-3.5" />
+        <div className="flex items-center gap-3">
+          <span className={cn(
+            'inline-flex items-center gap-1 text-xs',
+            isPositive ? 'text-foreground' : 'text-muted-foreground'
+          )}>
+            <PawPrint className="h-3 w-3" />
             {isPositive ? '腳掌' : '大便'}
-          </Badge>
-          <span className="text-sm text-neutral-500">
-            友善度: {PetFriendlyLevelLabels[petFriendlyLevel]}
+          </span>
+          <span className="text-xs text-muted-foreground">
+            {PetFriendlyLevelLabels[petFriendlyLevel]}
           </span>
         </div>
       </div>
 
       {/* 評論內容 */}
-      <p className="mt-3 text-sm leading-relaxed text-neutral-700">{content}</p>
+      <p className="mt-3 text-sm leading-relaxed text-foreground/80">{content}</p>
 
       {/* 附加圖片 */}
       {files.length > 0 && (
@@ -75,12 +69,12 @@ export function CommentCard({ comment }: CommentCardProps) {
               href={file.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block overflow-hidden rounded-md border border-neutral-200 transition-opacity hover:opacity-80"
+              className="block overflow-hidden rounded bg-muted transition-opacity hover:opacity-70"
             >
               <img
                 src={file.thumbnailUrl || file.url}
                 alt="評論圖片"
-                className="h-20 w-20 object-cover"
+                className="h-16 w-16 object-cover"
               />
             </a>
           ))}
@@ -88,7 +82,7 @@ export function CommentCard({ comment }: CommentCardProps) {
       )}
 
       {/* 時間 */}
-      <p className="mt-3 text-xs text-neutral-400">
+      <p className="mt-3 text-xs text-muted-foreground/70">
         {format(new Date(updateTime), 'yyyy/MM/dd HH:mm', { locale: zhTW })}
       </p>
     </div>

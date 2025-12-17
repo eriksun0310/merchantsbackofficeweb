@@ -1,62 +1,117 @@
 'use client';
 
-import { Venue, BusinessCategoryLabels } from '@/types/venue';
-import { Label } from '@/components/ui/label';
-import { ExternalLink } from 'lucide-react';
+import { Venue } from '@/types/venue';
+import { MapPin, Phone, Globe, ExternalLink, Copy, FileText } from 'lucide-react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
 interface BasicInfoViewProps {
   venue: Venue;
 }
 
 export function BasicInfoView({ venue }: BasicInfoViewProps) {
-  return (
-    <div className="space-y-4">
-      <ViewField label="店家類型" value={BusinessCategoryLabels[venue.categoryType]} />
-      <ViewField label="地址" value={venue.address} />
-      <ViewField label="電話" value={venue.phone || '-'} />
-      <ViewField
-        label="位置座標"
-        value={`${venue.location.latitude}, ${venue.location.longitude}`}
-      />
-      <ViewField
-        label="Google 地圖"
-        value={venue.googleMapsUrl}
-        isLink
-      />
-      <ViewField
-        label="官方網站"
-        value={venue.website}
-        isLink
-      />
-      <ViewField label="店家描述" value={venue.description || '-'} />
-    </div>
-  );
-}
+  const handleCopyAddress = () => {
+    navigator.clipboard.writeText(venue.address);
+    toast.success('已複製地址');
+  };
 
-function ViewField({
-  label,
-  value,
-  isLink = false
-}: {
-  label: string;
-  value?: string;
-  isLink?: boolean;
-}) {
+  const handleOpenMap = () => {
+    const url = venue.googleMapsUrl ||
+      `https://maps.google.com/?q=${venue.location.latitude},${venue.location.longitude}`;
+    window.open(url, '_blank');
+  };
+
   return (
-    <div className="grid grid-cols-[120px_1fr] gap-2">
-      <Label className="text-neutral-500">{label}</Label>
-      {isLink && value ? (
-        <a
-          href={value}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1 text-sm text-blue-600 hover:underline"
-        >
-          {value}
-          <ExternalLink className="h-3 w-3" />
-        </a>
-      ) : (
-        <span className="text-sm">{value || '-'}</span>
+    <div className="space-y-6">
+      {/* 地址區塊 */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+          <MapPin className="h-4 w-4" />
+          <span>地址</span>
+        </div>
+        <div className="flex items-start justify-between gap-4">
+          <p className="text-sm leading-relaxed">{venue.address}</p>
+          <div className="flex shrink-0 gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 px-2 text-muted-foreground hover:text-foreground"
+              onClick={handleCopyAddress}
+            >
+              <Copy className="h-3.5 w-3.5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 px-2 text-muted-foreground hover:text-foreground"
+              onClick={handleOpenMap}
+            >
+              <ExternalLink className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <hr className="border-neutral-200" />
+
+      {/* 聯絡資訊 */}
+      <div className="grid gap-6 sm:grid-cols-2">
+        {/* 電話 */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+            <Phone className="h-4 w-4" />
+            <span>電話</span>
+          </div>
+          {venue.phone ? (
+            <a
+              href={`tel:${venue.phone}`}
+              className="text-sm hover:underline"
+            >
+              {venue.phone}
+            </a>
+          ) : (
+            <p className="text-sm text-muted-foreground">未提供</p>
+          )}
+        </div>
+
+        {/* 官方網站 */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+            <Globe className="h-4 w-4" />
+            <span>官方網站</span>
+          </div>
+          {venue.website ? (
+            <a
+              href={venue.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-sm hover:underline"
+            >
+              <span className="truncate max-w-[200px]">
+                {venue.website.replace(/^https?:\/\//, '')}
+              </span>
+              <ExternalLink className="h-3 w-3 shrink-0" />
+            </a>
+          ) : (
+            <p className="text-sm text-muted-foreground">未提供</p>
+          )}
+        </div>
+      </div>
+
+      {/* 店家描述 */}
+      {venue.description && (
+        <>
+          <hr className="border-neutral-200" />
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+              <FileText className="h-4 w-4" />
+              <span>店家描述</span>
+            </div>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              {venue.description}
+            </p>
+          </div>
+        </>
       )}
     </div>
   );

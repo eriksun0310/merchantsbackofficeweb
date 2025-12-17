@@ -1,7 +1,7 @@
 'use client';
 
 import { Venue } from '@/types/venue';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { VenueTab } from '../venue-dialog';
 import { BasicInfoView } from './basic-info-view';
 import { OpeningHoursView } from './opening-hours-view';
 import { ImagesView } from './images-view';
@@ -9,34 +9,17 @@ import { PetRulesView } from './pet-rules-view';
 
 interface VenueViewProps {
   venue: Venue;
+  activeTab: VenueTab;
 }
 
-export function VenueView({ venue }: VenueViewProps) {
+export function VenueView({ venue, activeTab }: VenueViewProps) {
   return (
-    <Tabs defaultValue="basic" className="w-full">
-      <TabsList className="mb-4 grid w-full grid-cols-4">
-        <TabsTrigger value="basic">基本資訊</TabsTrigger>
-        <TabsTrigger value="hours">營業時間</TabsTrigger>
-        <TabsTrigger value="images">圖片</TabsTrigger>
-        <TabsTrigger value="rules">寵物規定</TabsTrigger>
-      </TabsList>
-
-      <TabsContent value="basic">
-        <BasicInfoView venue={venue} />
-      </TabsContent>
-
-      <TabsContent value="hours">
-        <OpeningHoursView venue={venue} />
-      </TabsContent>
-
-      <TabsContent value="images">
-        <ImagesView venue={venue} />
-      </TabsContent>
-
-      <TabsContent value="rules">
-        <PetRulesView venue={venue} />
-      </TabsContent>
-    </Tabs>
+    <div className="p-6">
+      {activeTab === 'basic' && <BasicInfoView venue={venue} />}
+      {activeTab === 'hours' && <OpeningHoursView venue={venue} />}
+      {activeTab === 'images' && <ImagesView venue={venue} />}
+      {activeTab === 'rules' && <PetRulesView venue={venue} />}
+    </div>
   );
 }
 

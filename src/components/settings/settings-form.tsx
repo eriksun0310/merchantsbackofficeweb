@@ -65,37 +65,37 @@ export function SettingsForm() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>個人資訊</CardTitle>
+    <Card className="border-0">
+      <CardHeader className="px-0 pt-0">
+        <CardTitle className="text-base font-medium">個人資訊</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-0">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-6">
             {/* 左側：帳號與密碼 */}
             <div className="space-y-6">
               {/* 帳號（唯讀） */}
               <div className="space-y-2">
-                <Label htmlFor="email">帳號 (Email)</Label>
+                <Label htmlFor="email" className="text-sm text-muted-foreground">帳號 (Email)</Label>
                 <Input
                   id="email"
                   type="email"
                   {...register('email')}
                   disabled
-                  className="bg-neutral-50"
+                  className="bg-muted/30"
                 />
-                <p className="text-xs text-neutral-500">帳號無法變更</p>
+                <p className="text-xs text-muted-foreground/70">帳號無法變更</p>
               </div>
 
-              <div className="border-t pt-6">
-                <p className="text-sm font-medium text-neutral-700 mb-4">
+              <div className="border-t border-border/50 pt-6">
+                <p className="text-sm font-medium text-foreground mb-4">
                   變更密碼（選填）
                 </p>
               </div>
 
               {/* 新密碼 */}
               <div className="space-y-2">
-                <Label htmlFor="password">新密碼</Label>
+                <Label htmlFor="password" className="text-sm text-muted-foreground">新密碼</Label>
                 <div className="relative">
                   <Input
                     id="password"
@@ -108,7 +108,7 @@ export function SettingsForm() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                     tabIndex={-1}
                   >
                     {showPassword ? (
@@ -119,13 +119,13 @@ export function SettingsForm() {
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-sm text-red-500">{errors.password.message}</p>
+                  <p className="text-xs text-destructive">{errors.password.message}</p>
                 )}
               </div>
 
               {/* 確認新密碼 */}
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">確認新密碼</Label>
+                <Label htmlFor="confirmPassword" className="text-sm text-muted-foreground">確認新密碼</Label>
                 <div className="relative">
                   <Input
                     id="confirmPassword"
@@ -138,7 +138,7 @@ export function SettingsForm() {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                     tabIndex={-1}
                   >
                     {showConfirmPassword ? (
@@ -149,7 +149,7 @@ export function SettingsForm() {
                   </button>
                 </div>
                 {errors.confirmPassword && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-xs text-destructive">
                     {errors.confirmPassword.message}
                   </p>
                 )}
@@ -158,12 +158,12 @@ export function SettingsForm() {
 
             {/* 右側：負責人資訊 */}
             <div className="space-y-6">
-              <div className="lg:border-l lg:pl-8 space-y-6">
-                <p className="text-sm font-medium text-neutral-700">負責人資訊</p>
+              <div className="lg:border-l lg:border-border/50 lg:pl-8 space-y-6">
+                <p className="text-sm font-medium text-foreground">負責人資訊</p>
 
                 {/* 負責人姓名 */}
                 <div className="space-y-2">
-                  <Label htmlFor="contactName">負責人姓名</Label>
+                  <Label htmlFor="contactName" className="text-sm text-muted-foreground">負責人姓名</Label>
                   <Input
                     id="contactName"
                     type="text"
@@ -172,13 +172,13 @@ export function SettingsForm() {
                     disabled={isLoading}
                   />
                   {errors.contactName && (
-                    <p className="text-sm text-red-500">{errors.contactName.message}</p>
+                    <p className="text-xs text-destructive">{errors.contactName.message}</p>
                   )}
                 </div>
 
                 {/* 電話 */}
                 <div className="space-y-2">
-                  <Label htmlFor="contactPhone">電話</Label>
+                  <Label htmlFor="contactPhone" className="text-sm text-muted-foreground">電話</Label>
                   <Input
                     id="contactPhone"
                     type="tel"
@@ -187,13 +187,13 @@ export function SettingsForm() {
                     disabled={isLoading}
                   />
                   {errors.contactPhone && (
-                    <p className="text-sm text-red-500">{errors.contactPhone.message}</p>
+                    <p className="text-xs text-destructive">{errors.contactPhone.message}</p>
                   )}
                 </div>
 
                 {/* 聯絡方式 */}
                 <div className="space-y-2">
-                  <Label>聯絡方式</Label>
+                  <Label className="text-sm text-muted-foreground">聯絡方式</Label>
                   <RadioGroup
                     value={contactMethod}
                     onValueChange={(value) =>
@@ -206,26 +206,26 @@ export function SettingsForm() {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value={ContactMethod.LINE} id="contact-line" />
-                      <Label htmlFor="contact-line" className="cursor-pointer">
+                      <Label htmlFor="contact-line" className="cursor-pointer text-sm">
                         LINE
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value={ContactMethod.PHONE} id="contact-phone" />
-                      <Label htmlFor="contact-phone" className="cursor-pointer">
+                      <Label htmlFor="contact-phone" className="cursor-pointer text-sm">
                         電話
                       </Label>
                     </div>
                   </RadioGroup>
                   {errors.contactMethod && (
-                    <p className="text-sm text-red-500">{errors.contactMethod.message}</p>
+                    <p className="text-xs text-destructive">{errors.contactMethod.message}</p>
                   )}
                 </div>
 
                 {/* LINE ID (只在選擇 LINE 時顯示) */}
                 {contactMethod === ContactMethod.LINE && (
                   <div className="space-y-2">
-                    <Label htmlFor="lineId">LINE ID</Label>
+                    <Label htmlFor="lineId" className="text-sm text-muted-foreground">LINE ID</Label>
                     <Input
                       id="lineId"
                       type="text"
@@ -234,7 +234,7 @@ export function SettingsForm() {
                       disabled={isLoading}
                     />
                     {errors.lineId && (
-                      <p className="text-sm text-red-500">{errors.lineId.message}</p>
+                      <p className="text-xs text-destructive">{errors.lineId.message}</p>
                     )}
                   </div>
                 )}
@@ -243,7 +243,7 @@ export function SettingsForm() {
           </div>
 
           {/* 儲存按鈕 */}
-          <div className="flex justify-end mt-6 pt-6 border-t">
+          <div className="flex justify-end mt-8 pt-6 border-t border-border/50">
             <Button type="submit" disabled={isLoading || !isDirty}>
               {isLoading ? '儲存中...' : '儲存變更'}
             </Button>

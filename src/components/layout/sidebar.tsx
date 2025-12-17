@@ -50,15 +50,15 @@ export function Sidebar() {
     <TooltipProvider delayDuration={0}>
       <aside
         className={cn(
-          'fixed left-0 top-0 z-40 h-screen border-r border-neutral-200 bg-white transition-all duration-300',
+          'fixed left-0 top-0 z-40 h-screen bg-neutral-50/80 transition-all duration-300',
           isOpen ? 'w-60' : 'w-16'
         )}
       >
         <div className="flex h-full flex-col">
           {/* Header */}
-          <div className="flex h-14 items-center justify-between border-b border-neutral-200 px-4">
+          <div className="flex h-16 items-center justify-between px-4">
             {isOpen && (
-              <span className="text-lg font-semibold tracking-tight">PTalk 後台</span>
+              <span className="text-base font-medium tracking-tight">PTalk 後台</span>
             )}
             <Button
               variant="ghost"
@@ -84,13 +84,13 @@ export function Sidebar() {
                 <Link
                   href={item.href}
                   className={cn(
-                    'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                    'flex items-center gap-3 rounded px-3 py-2.5 text-sm font-medium transition-opacity',
                     isActive
-                      ? 'bg-neutral-100 text-black'
-                      : 'text-neutral-600 hover:bg-neutral-50 hover:text-black'
+                      ? 'text-foreground'
+                      : 'text-muted-foreground hover:text-foreground'
                   )}
                 >
-                  <Icon className="h-5 w-5 shrink-0" />
+                  <Icon className="h-4 w-4 shrink-0" />
                   {isOpen && <span>{item.title}</span>}
                 </Link>
               );
@@ -111,7 +111,7 @@ export function Sidebar() {
           </nav>
 
           {/* Bottom section */}
-          <div className="border-t border-neutral-200 p-2">
+          <div className="p-2 mt-auto">
             {/* <Separator className="my-2" /> */}
 
             {bottomItems.map((item) => {
@@ -122,13 +122,13 @@ export function Sidebar() {
                 <Link
                   href={item.href}
                   className={cn(
-                    'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                    'flex items-center gap-3 rounded px-3 py-2.5 text-sm font-medium transition-opacity',
                     isActive
-                      ? 'bg-neutral-100 text-black'
-                      : 'text-neutral-600 hover:bg-neutral-50 hover:text-black'
+                      ? 'text-foreground'
+                      : 'text-muted-foreground hover:text-foreground'
                   )}
                 >
-                  <Icon className="h-5 w-5 shrink-0" />
+                  <Icon className="h-4 w-4 shrink-0" />
                   {isOpen && <span>{item.title}</span>}
                 </Link>
               );
@@ -151,9 +151,9 @@ export function Sidebar() {
             {isOpen ? (
               <button
                 onClick={handleLogout}
-                className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-black"
+                className="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm font-medium text-muted-foreground transition-opacity hover:text-foreground"
               >
-                <LogOut className="h-5 w-5 shrink-0" />
+                <LogOut className="h-4 w-4 shrink-0" />
                 <span>登出</span>
               </button>
             ) : (
@@ -161,9 +161,9 @@ export function Sidebar() {
                 <TooltipTrigger asChild>
                   <button
                     onClick={handleLogout}
-                    className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-black"
+                    className="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm font-medium text-muted-foreground transition-opacity hover:text-foreground"
                   >
-                    <LogOut className="h-5 w-5 shrink-0" />
+                    <LogOut className="h-4 w-4 shrink-0" />
                   </button>
                 </TooltipTrigger>
                 <TooltipContent side="right">

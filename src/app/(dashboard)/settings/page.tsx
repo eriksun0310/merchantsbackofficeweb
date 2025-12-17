@@ -8,7 +8,7 @@ export default function SettingsPage() {
     <>
       <Header title="帳號設定" description="管理您的帳號資訊與聯絡方式" />
 
-      <div className="p-6">
+      <div className="p-8">
         <SettingsForm />
       </div>
     </>

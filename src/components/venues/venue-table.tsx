@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { MoreHorizontal, Trash2, ImageIcon } from 'lucide-react';
+import { MoreHorizontal, Trash2, ImageIcon, Store } from 'lucide-react';
 import { toast } from 'sonner';
 import { Venue, BusinessCategoryLabels } from '@/types/venue';
 import { useDeleteVenue } from '@/hooks/use-venues';
@@ -44,7 +44,7 @@ export function VenueTable({ venues, isLoading, onRowClick }: VenueTableProps) {
   const deleteVenue = useDeleteVenue();
 
   const handleDeleteClick = (e: React.MouseEvent, venue: Venue) => {
-    e.stopPropagation(); // 阻止觸發 row click
+    e.stopPropagation();
     setVenueToDelete(venue);
     setDeleteDialogOpen(true);
   };
@@ -68,11 +68,13 @@ export function VenueTable({ venues, isLoading, onRowClick }: VenueTableProps) {
 
   if (venues.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-neutral-300 py-16">
-        <ImageIcon className="h-12 w-12 text-neutral-400" />
-        <h3 className="mt-4 text-lg font-medium">尚無店家</h3>
-        <p className="mt-1 text-sm text-neutral-500">
-          點擊「新增店家」開始建立您的第一間店家
+      <div className="flex flex-col items-center justify-center py-16">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+          <Store className="h-6 w-6 text-muted-foreground" />
+        </div>
+        <p className="mt-4 text-sm font-medium text-foreground">尚無店家</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          點擊「新增店家」開始建立
         </p>
       </div>
     );
@@ -80,84 +82,84 @@ export function VenueTable({ venues, isLoading, onRowClick }: VenueTableProps) {
 
   return (
     <>
-      <div className="rounded-lg border border-neutral-200 bg-white">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-16">圖片</TableHead>
-              <TableHead>店家名稱</TableHead>
-              <TableHead className="w-24">類型</TableHead>
-              <TableHead>地址</TableHead>
-              <TableHead className="w-28">狀態</TableHead>
-              <TableHead className="w-16 text-right">操作</TableHead>
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead className="w-16">圖片</TableHead>
+            <TableHead>店家名稱</TableHead>
+            <TableHead className="w-24">類型</TableHead>
+            <TableHead>地址</TableHead>
+            <TableHead className="w-28">狀態</TableHead>
+            <TableHead className="w-16 text-right">操作</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {venues.map((venue) => (
+            <TableRow
+              key={venue.id}
+              className="cursor-pointer transition-colors hover:bg-muted/50"
+              onClick={() => onRowClick?.(venue)}
+            >
+              <TableCell>
+                <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-muted">
+                  {venue.images[0] ? (
+                    <Image
+                      src={venue.images[0]}
+                      alt={venue.name}
+                      fill
+                      className="object-cover"
+                      sizes="48px"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <ImageIcon className="h-4 w-4 text-muted-foreground/50" />
+                    </div>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>
+                <span className="font-medium text-foreground">{venue.name}</span>
+              </TableCell>
+              <TableCell>
+                <span className="text-sm text-muted-foreground">
+                  {BusinessCategoryLabels[venue.categoryType]}
+                </span>
+              </TableCell>
+              <TableCell>
+                <span className="line-clamp-1 text-sm text-muted-foreground">
+                  {venue.address}
+                </span>
+              </TableCell>
+              <TableCell>
+                <VenueStatusBadge status={venue.status} />
+              </TableCell>
+              <TableCell className="text-right">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                      className="text-red-600 focus:text-red-600"
+                      onClick={(e) => handleDeleteClick(e, venue)}
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      刪除
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {venues.map((venue) => (
-              <TableRow
-                key={venue.id}
-                className="cursor-pointer hover:bg-neutral-50"
-                onClick={() => onRowClick?.(venue)}
-              >
-                <TableCell>
-                  <div className="relative h-10 w-10 overflow-hidden rounded-md bg-neutral-100">
-                    {venue.images[0] ? (
-                      <Image
-                        src={venue.images[0]}
-                        alt={venue.name}
-                        fill
-                        className="object-cover"
-                        sizes="40px"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center">
-                        <ImageIcon className="h-4 w-4 text-neutral-400" />
-                      </div>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell className="font-medium">{venue.name}</TableCell>
-                <TableCell>
-                  <span className="text-sm text-neutral-600">
-                    {BusinessCategoryLabels[venue.categoryType]}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <span className="line-clamp-1 text-sm text-neutral-600">
-                    {venue.address}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <VenueStatusBadge status={venue.status} />
-                </TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem
-                        className="text-red-600 focus:text-red-600"
-                        onClick={(e) => handleDeleteClick(e, venue)}
-                      >
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        刪除
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+          ))}
+        </TableBody>
+      </Table>
 
       {/* 刪除確認對話框 */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
@@ -191,43 +193,41 @@ export function VenueTable({ venues, isLoading, onRowClick }: VenueTableProps) {
 
 function VenueTableSkeleton() {
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-16">圖片</TableHead>
-            <TableHead>店家名稱</TableHead>
-            <TableHead className="w-24">類型</TableHead>
-            <TableHead>地址</TableHead>
-            <TableHead className="w-28">狀態</TableHead>
-            <TableHead className="w-16 text-right">操作</TableHead>
+    <Table>
+      <TableHeader>
+        <TableRow className="hover:bg-transparent">
+          <TableHead className="w-16">圖片</TableHead>
+          <TableHead>店家名稱</TableHead>
+          <TableHead className="w-24">類型</TableHead>
+          <TableHead>地址</TableHead>
+          <TableHead className="w-28">狀態</TableHead>
+          <TableHead className="w-16 text-right">操作</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <TableRow key={i} className="hover:bg-transparent">
+            <TableCell>
+              <Skeleton className="h-12 w-12 rounded-lg" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-32" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-16" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-48" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-5 w-16" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="ml-auto h-8 w-8" />
+            </TableCell>
           </TableRow>
-        </TableHeader>
-        <TableBody>
-          {Array.from({ length: 5 }).map((_, i) => (
-            <TableRow key={i}>
-              <TableCell>
-                <Skeleton className="h-10 w-10 rounded-md" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-4 w-32" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-4 w-16" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-4 w-48" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-6 w-20 rounded-full" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="ml-auto h-8 w-8" />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
