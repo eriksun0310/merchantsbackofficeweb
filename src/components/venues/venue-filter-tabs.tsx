@@ -34,7 +34,7 @@ export function VenueFilterTabs({ venues, selectedStatus, onStatusChange }: Venu
   ];
 
   return (
-    <div className="flex gap-1 border-b border-neutral-300 px-2">
+    <div className="flex gap-1 px-2">
       {tabs.map((tab) => {
         const isActive = selectedStatus === tab.status;
 

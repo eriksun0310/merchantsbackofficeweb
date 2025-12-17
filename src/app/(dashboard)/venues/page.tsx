@@ -12,7 +12,6 @@ import { VenueTable } from '@/components/venues/venue-table';
 import { VenueDialog } from '@/components/venues/venue-dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -106,7 +105,7 @@ export default function VenuesPage() {
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/50" />
               <Input
                 placeholder="搜尋店家名稱或地址..."
-                className="pl-9"
+                className="border-0 bg-white pl-9 shadow-sm"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -114,7 +113,7 @@ export default function VenuesPage() {
 
             {/* 類型篩選 */}
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-full sm:w-32">
+              <SelectTrigger className="w-full border-0 bg-white shadow-sm sm:w-32">
                 <SelectValue placeholder="類型" />
               </SelectTrigger>
               <SelectContent>
@@ -148,20 +147,18 @@ export default function VenuesPage() {
         </div>
 
         {/* 狀態 Tab + 表格 */}
-        <Card className="py-0">
+        <div>
           <VenueFilterTabs
             venues={venues}
             selectedStatus={selectedStatus}
             onStatusChange={setSelectedStatus}
           />
-          <CardContent className="p-0">
-            <VenueTable
-              venues={filteredVenues}
-              isLoading={isLoading}
-              onRowClick={handleRowClick}
-            />
-          </CardContent>
-        </Card>
+          <VenueTable
+            venues={filteredVenues}
+            isLoading={isLoading}
+            onRowClick={handleRowClick}
+          />
+        </div>
       </div>
 
       {/* 編輯店家 Dialog */}

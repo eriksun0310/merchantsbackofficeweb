@@ -35,7 +35,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-neutral-50">
       <Sidebar />
       <main
         className={cn(

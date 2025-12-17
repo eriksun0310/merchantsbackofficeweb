@@ -27,14 +27,14 @@ export function VenueSelector({
     <div className="flex items-center gap-3">
       <div className="flex items-center gap-2 text-sm font-medium text-neutral-700">
         <Store className="h-4 w-4" />
-        <span>選擇店家</span>
+        <span>選擇店家ㄉ</span>
       </div>
       <Select
         value={selectedVenueId || undefined}
         onValueChange={onSelect}
         disabled={isLoading}
       >
-        <SelectTrigger className="w-64">
+        <SelectTrigger className="w-64 border-0 bg-white shadow-sm">
           <SelectValue placeholder="請選擇店家" />
         </SelectTrigger>
         <SelectContent>
